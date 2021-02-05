@@ -65,12 +65,14 @@ namespace WeatherAnalyzer
         static void Main(string[] args)
         {
             ExtractWeatherEventsFromFile(Path);
-            List<WeatherEvent> listOfUniqueCities = GetUniqueCities(listOfWeatherEvents).ToList();
-            foreach(WeatherEvent weatherEvent in listOfUniqueCities)
-            {
-                Console.WriteLine(weatherEvent.City);
-            }
-            Console.WriteLine(listOfUniqueCities.Count);
+
+            // Unique cities.
+            Console.WriteLine("----- 0 -----");
+            GetNumberOfUniqueCities(listOfWeatherEvents);
+
+            // Entries in year.
+            Console.WriteLine("----- 1 -----");
+            GetNumberOfEntriesByYear(listOfWeatherEvents);
         }
 
         /// <summary>
@@ -80,7 +82,10 @@ namespace WeatherAnalyzer
         {
             using (StreamReader sr = new StreamReader(path))
             {
-                sr.ReadLine();
+                if (!sr.EndOfStream)
+                {
+                    sr.ReadLine();
+                }
                 while (!sr.EndOfStream)
                 {
                     try
@@ -113,13 +118,24 @@ namespace WeatherAnalyzer
         }
 
         /// <summary>
-        /// Gets all unique cities from the list of WeatherEvents.
+        /// Outputs the number of unique cities from the list of WeatherEvents to the Console.
         /// </summary>
         /// <param name="weatherEvents">The IEnumerable of WeatherEvents.</param>
-        /// <returns>The IEnumerable<WeatherEvent>, containing all the entries of the unique cities.</returns>
-        private static IEnumerable<WeatherEvent> GetUniqueCities(IEnumerable<WeatherEvent> weatherEvents)
+        private static void GetNumberOfUniqueCities(IEnumerable<WeatherEvent> weatherEvents)
         {
-            return weatherEvents.GroupBy(x => x.City).Select(x => x.First());
+            Console.WriteLine(weatherEvents.GroupBy(x => x.City).Count());
+        }
+
+        /// <summary>
+        /// Outputs the number of entries in each year to the Console.
+        /// </summary>
+        /// <param name="weatherEvents">The IEnumerable of WeatherEvents.</param>
+        private static void GetNumberOfEntriesByYear(IEnumerable<WeatherEvent> weatherEvents)
+        {
+            foreach (var group in weatherEvents.GroupBy(x => x.StartTime.Year))
+            {
+                Console.WriteLine(group.Key + " - " + group.Count());
+            }
         }
 
         /// <summary>
