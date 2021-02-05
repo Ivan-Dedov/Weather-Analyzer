@@ -13,7 +13,7 @@ namespace WeatherAnalyzer
         /// The ID of the WeatherEvent.
         /// </summary>
         public string EventID { get; set; }
-        
+
         /// <summary>
         /// The type of the WeatherEvent.
         /// </summary>
@@ -72,7 +72,31 @@ namespace WeatherAnalyzer
         /// <summary>
         /// The zip code of the WeatherEvent.
         /// </summary>
-        public int ZipCode { get; set; }
+        public string ZipCode { get; set; }
+
+        private static readonly string ToStringSeparator = ",";
+
+        /// <summary>
+        /// Converts the value of the current WeatherEvent instance
+        /// to its equivalent string representation.
+        /// </summary>
+        /// <returns>A string representation of a WeatherEvent.</returns>
+        public override string ToString()
+        {
+            return EventID.ToString() + ToStringSeparator +
+                   Type.ToString() + ToStringSeparator +
+                   Severity.ToString() + ToStringSeparator +
+                   StartTime.ToString() + ToStringSeparator +
+                   EndTime.ToString() + ToStringSeparator +
+                   TimeZone.ToString() + ToStringSeparator +
+                   AirportCode.ToString() + ToStringSeparator +
+                   LocationLatitude.ToString() + ToStringSeparator +
+                   LocationLongitude.ToString() + ToStringSeparator +
+                   City.ToString() + ToStringSeparator +
+                   County.ToString() + ToStringSeparator +
+                   State.ToString() + ToStringSeparator +
+                   ZipCode.ToString();
+        }
 
     }
 

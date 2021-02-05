@@ -51,6 +51,7 @@ namespace WeatherAnalyzer
         /// The path to the data file.
         /// </summary>
         public static readonly string Path = @"..\..\..\..\..\WeatherEvents_Jan2016-Dec2020.csv";
+
         /// <summary>
         /// The string separator used in the file.
         /// </summary>
@@ -64,6 +65,61 @@ namespace WeatherAnalyzer
         static void Main(string[] args)
         {
             ExtractWeatherEventsFromFile(Path);
+            List<WeatherEvent> listOfUniqueCities = GetUniqueCities(listOfWeatherEvents).ToList();
+            foreach(WeatherEvent weatherEvent in listOfUniqueCities)
+            {
+                Console.WriteLine(weatherEvent.City);
+            }
+            Console.WriteLine(listOfUniqueCities.Count);
+        }
+
+        /// <summary>
+        /// Reads the file and converts the data to a list.
+        /// </summary>
+        private static void ExtractWeatherEventsFromFile(string path)
+        {
+            using (StreamReader sr = new StreamReader(path))
+            {
+                sr.ReadLine();
+                while (!sr.EndOfStream)
+                {
+                    try
+                    {
+                        string[] line = sr.ReadLine().Split(CommaSeparatorValue);
+                        listOfWeatherEvents.Add(new WeatherEvent()
+                        {
+                            EventID = line[0],
+                            Type = Enum.Parse<WeatherEventType>(line[1]),
+                            Severity = Enum.Parse<Severity>(line[2]),
+                            StartTime = DateTime.Parse(line[3]),
+                            EndTime = DateTime.Parse(line[4]),
+                            TimeZone = line[5],
+                            AirportCode = line[6],
+                            LocationLatitude = double.Parse(line[7], new CultureInfo("en-US")),
+                            LocationLongitude = double.Parse(line[8], new CultureInfo("en-US")),
+                            City = line[9],
+                            County = line[10],
+                            State = line[11],
+                            ZipCode = line[12],
+                        });
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                        return;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets all unique cities from the list of WeatherEvents.
+        /// </summary>
+        /// <param name="weatherEvents">The IEnumerable of WeatherEvents.</param>
+        /// <returns>The IEnumerable<WeatherEvent>, containing all the entries of the unique cities.</returns>
+        private static IEnumerable<WeatherEvent> GetUniqueCities(IEnumerable<WeatherEvent> weatherEvents)
+        {
+            return weatherEvents.GroupBy(x => x.City).Select(x => x.First());
         }
 
         /// <summary>
@@ -93,41 +149,6 @@ namespace WeatherAnalyzer
             foreach (WeatherEvent weatherEvent in uniqueWeatherSeverities)
             {
                 Console.WriteLine(weatherEvent.Severity.ToString());
-            }
-        }
-
-        /// <summary>
-        /// Reads the file and converts the data to a list.
-        /// </summary>
-        private static void ExtractWeatherEventsFromFile(string path)
-        {
-            using (StreamReader sr = new StreamReader(path))
-            {
-                sr.ReadLine();
-                while (!sr.EndOfStream)
-                {
-                    try
-                    {
-                        string[] line = sr.ReadLine().Split(CommaSeparatorValue);
-                        listOfWeatherEvents.Add(new WeatherEvent()
-                        {
-                            EventID = line[0],
-                            Type = Enum.Parse<WeatherEventType>(line[1]),
-                            Severity = Enum.Parse<Severity>(line[2]),
-                            StartTime = DateTime.Parse(line[3]),
-                            EndTime = DateTime.Parse(line[4]),
-                            TimeZone = line[5],
-                            AirportCode = line[6],
-                            LocationLatitude = double.Parse(line[7], new CultureInfo("en-US")),
-                            LocationLongitude = double.Parse(line[8], new CultureInfo("en-US")),
-                            City = line[9],
-                        });
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine(ex.Message);
-                    }
-                }
             }
         }
 
