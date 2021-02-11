@@ -45,7 +45,14 @@ namespace WeatherAnalyzer
 
         // 0. Linq - сколько различных городов есть в датасете.
         // 1. Сколько записей за каждый из годов имеется в датасете.
-        // Потом будут еще запросы
+
+        // -1. Вывести количество зафиксированных природных явлений в Америке в 2018 году
+        // 0. Вывести количество штатов, количество городов в датасете
+        // 1. Вывести топ 3 самых дождливых города в 2019 году в порядке убывания количества дождей
+        // (вывести город и количество дождей)
+        // 2. Вывести данные самых долгих(топ-1) снегопадов в Америке по годам(за каждый из годов) -
+        // с какого времени, по какое время, в каком городе
+        //(Для простоты и красивости предлагается использовать анонимные объекты)
 
         /// <summary>
         /// The path to the data file.
@@ -66,13 +73,32 @@ namespace WeatherAnalyzer
         {
             ExtractWeatherEventsFromFile(Path);
 
-            // Unique cities.
-            Console.WriteLine("----- 0 -----");
-            GetNumberOfUniqueCities(listOfWeatherEvents);
-
             // Entries in year.
-            Console.WriteLine("----- 1 -----");
-            GetNumberOfEntriesByYear(listOfWeatherEvents);
+            Console.WriteLine("----- -2 -----");
+            foreach (var group in listOfWeatherEvents.GroupBy(x => x.StartTime.Year))
+            {
+                Console.WriteLine(group.Key + " - " + group.Count());
+            }
+
+            // Number of weather events in the US in 2018.
+            Console.WriteLine("----- -1 -----");
+            Console.WriteLine(/*WRITE LINQ HERE*/);
+
+            // Number of unique states and cities in the entire dataset.
+            Console.WriteLine("----- 00 -----");
+            Console.WriteLine("Number of unique states: " /*WRITE LINQ HERE*/);
+            Console.WriteLine("Number of unique cities: " + listOfWeatherEvents.GroupBy(x => x.City).Count().ToString());
+
+            // Top-3 cities by rainfall in 2019 (in descending order).
+            Console.WriteLine("----- 01 -----");
+            Console.WriteLine(/*WRITE LINQ HERE*/);
+
+            // Information about the top-1 snowstorm in each year (start, end times and city).
+            Console.WriteLine("----- 02 -----");
+            foreach (var group in listOfWeatherEvents.GroupBy(x => x.StartTime.Year))
+            {
+                Console.WriteLine(group.Key + " - " /*WRITE LINQ HERE*/);
+            }
         }
 
         /// <summary>
@@ -114,27 +140,6 @@ namespace WeatherAnalyzer
                         return;
                     }
                 }
-            }
-        }
-
-        /// <summary>
-        /// Outputs the number of unique cities from the list of WeatherEvents to the Console.
-        /// </summary>
-        /// <param name="weatherEvents">The IEnumerable of WeatherEvents.</param>
-        private static void GetNumberOfUniqueCities(IEnumerable<WeatherEvent> weatherEvents)
-        {
-            Console.WriteLine(weatherEvents.GroupBy(x => x.City).Count());
-        }
-
-        /// <summary>
-        /// Outputs the number of entries in each year to the Console.
-        /// </summary>
-        /// <param name="weatherEvents">The IEnumerable of WeatherEvents.</param>
-        private static void GetNumberOfEntriesByYear(IEnumerable<WeatherEvent> weatherEvents)
-        {
-            foreach (var group in weatherEvents.GroupBy(x => x.StartTime.Year))
-            {
-                Console.WriteLine(group.Key + " - " + group.Count());
             }
         }
 
