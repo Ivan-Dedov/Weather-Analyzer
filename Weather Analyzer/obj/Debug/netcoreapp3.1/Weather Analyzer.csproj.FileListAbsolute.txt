@@ -11,3 +11,16 @@ C:\Учеба\ПрогаДЗ\Weather Analyzer\Weather Analyzer\obj\Debug\netcore
 C:\Учеба\ПрогаДЗ\Weather Analyzer\Weather Analyzer\obj\Debug\netcoreapp3.1\Weather Analyzer.dll
 C:\Учеба\ПрогаДЗ\Weather Analyzer\Weather Analyzer\obj\Debug\netcoreapp3.1\Weather Analyzer.pdb
 C:\Учеба\ПрогаДЗ\Weather Analyzer\Weather Analyzer\obj\Debug\netcoreapp3.1\Weather Analyzer.genruntimeconfig.cache
+C:\Users\Linok\Desktop\prog\Weather-Analyzer\Weather Analyzer\bin\Debug\netcoreapp3.1\Weather Analyzer.exe
+C:\Users\Linok\Desktop\prog\Weather-Analyzer\Weather Analyzer\bin\Debug\netcoreapp3.1\Weather Analyzer.deps.json
+C:\Users\Linok\Desktop\prog\Weather-Analyzer\Weather Analyzer\bin\Debug\netcoreapp3.1\Weather Analyzer.runtimeconfig.json
+C:\Users\Linok\Desktop\prog\Weather-Analyzer\Weather Analyzer\bin\Debug\netcoreapp3.1\Weather Analyzer.runtimeconfig.dev.json
+C:\Users\Linok\Desktop\prog\Weather-Analyzer\Weather Analyzer\bin\Debug\netcoreapp3.1\Weather Analyzer.dll
+C:\Users\Linok\Desktop\prog\Weather-Analyzer\Weather Analyzer\bin\Debug\netcoreapp3.1\Weather Analyzer.pdb
+C:\Users\Linok\Desktop\prog\Weather-Analyzer\Weather Analyzer\obj\Debug\netcoreapp3.1\Weather Analyzer.csprojAssemblyReference.cache
+C:\Users\Linok\Desktop\prog\Weather-Analyzer\Weather Analyzer\obj\Debug\netcoreapp3.1\Weather Analyzer.AssemblyInfoInputs.cache
+C:\Users\Linok\Desktop\prog\Weather-Analyzer\Weather Analyzer\obj\Debug\netcoreapp3.1\Weather Analyzer.AssemblyInfo.cs
+C:\Users\Linok\Desktop\prog\Weather-Analyzer\Weather Analyzer\obj\Debug\netcoreapp3.1\Weather Analyzer.csproj.CoreCompileInputs.cache
+C:\Users\Linok\Desktop\prog\Weather-Analyzer\Weather Analyzer\obj\Debug\netcoreapp3.1\Weather Analyzer.dll
+C:\Users\Linok\Desktop\prog\Weather-Analyzer\Weather Analyzer\obj\Debug\netcoreapp3.1\Weather Analyzer.pdb
+C:\Users\Linok\Desktop\prog\Weather-Analyzer\Weather Analyzer\obj\Debug\netcoreapp3.1\Weather Analyzer.genruntimeconfig.cache
