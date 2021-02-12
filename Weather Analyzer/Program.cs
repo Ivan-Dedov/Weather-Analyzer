@@ -71,7 +71,15 @@ namespace WeatherAnalyzer
 
         static void Main(string[] args)
         {
-            ExtractWeatherEventsFromFile(Path);
+            try
+            {
+                ExtractWeatherEventsFromFile(Path);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return;
+            }
 
             // Entries in year.
             Console.WriteLine("----- -2 -----");
@@ -82,20 +90,22 @@ namespace WeatherAnalyzer
 
             // Number of weather events in the US in 2018.
             Console.WriteLine("----- -1 -----");
-            Console.WriteLine("Number of weather events 2018: " + listOfWeatherEvents.Where(x => x.StartTime.Year == 2018).Count().ToString());
+            Console.WriteLine($"Number of weather events in 2018: {listOfWeatherEvents.Where(x => x.StartTime.Year == 2018).Count().ToString()}");
 
             // Number of unique states and cities in the entire dataset.
             Console.WriteLine("----- 00 -----");
-            Console.WriteLine("Number of unique states: " + listOfWeatherEvents.GroupBy(x => x.State).Count().ToString());
-            Console.WriteLine("Number of unique cities: " + listOfWeatherEvents.GroupBy(x => x.City).Count().ToString());
+            Console.WriteLine($"Number of unique states: {listOfWeatherEvents.GroupBy(x => x.State).Count().ToString()}");
+            Console.WriteLine($"Number of unique cities: {listOfWeatherEvents.GroupBy(x => x.City).Count().ToString()}");
 
             // Top-3 cities by rainfall in 2019 (in descending order).
             Console.WriteLine("----- 01 -----");
-            List<WeatherEvent> list = listOfWeatherEvents.Where(x => x.StartTime.Year == 2019 && x.Type == WeatherEventType.Rain).OrderByDescending(x => x.EndTime - x.StartTime).ToList();
-            Console.WriteLine("Top-3 rainfall cities: ");
+            List<WeatherEvent> list = listOfWeatherEvents.Where(x => x.StartTime.Year == 2019 && x.Type == WeatherEventType.Rain)
+                                                         .OrderByDescending(x => x.EndTime - x.StartTime)
+                                                         .ToList();
+            Console.WriteLine("Top-3 cities by rainfall: ");
             for (int i = 0; i < 3; i++)
             {
-                Console.WriteLine((i + 1).ToString() + " - " + list[i].City);
+                Console.WriteLine($"{(i + 1).ToString()} - {list[i].City});
             }
 
             // Information about the top-1 snowstorm in each year (start, end times and city).
@@ -103,7 +113,7 @@ namespace WeatherAnalyzer
             foreach (var group in listOfWeatherEvents.GroupBy(x => x.StartTime.Year))
             {
                 WeatherEvent e = group.Where(x => x.Type == WeatherEventType.Snow).OrderBy(x => (x.EndTime - x.StartTime)).Last();
-                Console.WriteLine($"{group.Key} - {e.City} {e.StartTime} {e.EndTime}");
+                Console.WriteLine($"{group.Key} - City: {e.City} | From {e.StartTime} to {e.EndTime}");
             }
         }
 
