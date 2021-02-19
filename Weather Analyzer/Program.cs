@@ -82,38 +82,85 @@ namespace WeatherAnalyzer
             }
 
             // Entries in year.
-            Console.WriteLine("----- -2 -----");
+            Console.WriteLine(Environment.NewLine + "----- -2 -----");
             foreach (var group in listOfWeatherEvents.GroupBy(x => x.StartTime.Year))
             {
                 Console.WriteLine(group.Key + " - " + group.Count());
             }
+            Console.WriteLine("===<>====<>===");
+            var grouping = from item in listOfWeatherEvents
+                           group item by item.StartTime.Year;
+            foreach (var group in grouping)
+            {
+                Console.WriteLine(group.Key + " - " + group.Count());
+            }
+
 
             // Number of weather events in the US in 2018.
-            Console.WriteLine("----- -1 -----");
-            Console.WriteLine($"Number of weather events in 2018: {listOfWeatherEvents.Where(x => x.StartTime.Year == 2018).Count().ToString()}");
+            Console.WriteLine(Environment.NewLine + "----- -1 -----");
+            Console.WriteLine($"Number of weather events in 2018: {listOfWeatherEvents.Where(x => x.StartTime.Year == 2018).Count()}");
+            Console.WriteLine("===<>====<>===");
+            var answer = from item in listOfWeatherEvents
+                         where item.StartTime.Year == 2018
+                         select item;
+            Console.WriteLine($"Number of weather events in 2018: {answer.Count()}");
 
             // Number of unique states and cities in the entire dataset.
-            Console.WriteLine("----- 00 -----");
-            Console.WriteLine($"Number of unique states: {listOfWeatherEvents.GroupBy(x => x.State).Count().ToString()}");
-            Console.WriteLine($"Number of unique cities: {listOfWeatherEvents.GroupBy(x => x.City).Count().ToString()}");
+            Console.WriteLine(Environment.NewLine + "----- 00 -----");
+            Console.WriteLine($"Number of unique states: {listOfWeatherEvents.GroupBy(x => x.State).Count()}");
+            Console.WriteLine($"Number of unique cities: {listOfWeatherEvents.GroupBy(x => x.City).Count()}");
+            Console.WriteLine("===<>====<>===");
+            var uniqueStates = from item in listOfWeatherEvents
+                               group item by item.State;
+            var uniqueCities = from item in listOfWeatherEvents
+                               group item by item.City;
+            Console.WriteLine($"Number of unique states: {uniqueStates.Count()}");
+            Console.WriteLine($"Number of unique cities: {uniqueCities.Count()}");
 
             // Top-3 cities by rainfall in 2019 (in descending order).
-            Console.WriteLine("----- 01 -----");
+            Console.WriteLine(Environment.NewLine + "----- 01 -----");
             List<WeatherEvent> list = listOfWeatherEvents.Where(x => x.StartTime.Year == 2019 && x.Type == WeatherEventType.Rain)
                                                          .OrderByDescending(x => x.EndTime - x.StartTime)
                                                          .ToList();
-            Console.WriteLine("Top-3 cities by rainfall: ");
+            Console.WriteLine("Top-3 cities by rainfall in 2019: ");
             for (int i = 0; i < 3; i++)
             {
-                Console.WriteLine($"{(i + 1).ToString()} - {list[i].City});
+                Console.WriteLine($"{i + 1} - {list[i].City}");
+            }
+            Console.WriteLine("===<>====<>===");
+            var ranking = from item in listOfWeatherEvents
+                       where item.StartTime.Year == 2019 && item.Type == WeatherEventType.Rain
+                       orderby item.EndTime - item.StartTime
+                       select item;
+            // Тут появляется IOrderedEnumerable, у которой нет индексатора, так что я хз как к ней обратиться надо было :(
+            // поэтому пришлось сделать ToList()
+            var top3 = ranking.ToList();
+            Console.WriteLine("Top-3 cities by rainfall in 2019: ");
+            for (int i = 0; i < 3; i++)
+            {
+                Console.WriteLine($"{i + 1} - {top3[top3.Count() - (i + 1)].City}");
             }
 
             // Information about the top-1 snowstorm in each year (start, end times and city).
-            Console.WriteLine("----- 02 -----");
+            Console.WriteLine(Environment.NewLine + "----- 02 -----");
             foreach (var group in listOfWeatherEvents.GroupBy(x => x.StartTime.Year))
             {
-                WeatherEvent e = group.Where(x => x.Type == WeatherEventType.Snow).OrderBy(x => (x.EndTime - x.StartTime)).Last();
+                WeatherEvent e = group.Where(x => x.Type == WeatherEventType.Snow).OrderBy(x => x.EndTime - x.StartTime).Last();
                 Console.WriteLine($"{group.Key} - City: {e.City} | From {e.StartTime} to {e.EndTime}");
+            }
+            Console.WriteLine("===<>====<>===");
+            var groups = from item in listOfWeatherEvents
+                         group item by item.StartTime.Year;
+            foreach(var groupItem in groups)
+            {
+                var snowstorms = from item in groupItem
+                                        where item.Type == WeatherEventType.Snow
+                                        orderby item.EndTime - item.StartTime
+                                        select item;
+                // Тут появляется IOrderedEnumerable, у которой нет индексатора, так что я хз как к ней обратиться надо было :(
+                // поэтому сделал ToList()
+                var e = snowstorms.ToList()[^1];
+                Console.WriteLine($"{groupItem.Key} - City: {e.City} | From {e.StartTime} to {e.EndTime}");
             }
         }
 
