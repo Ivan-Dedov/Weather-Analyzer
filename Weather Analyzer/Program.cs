@@ -84,16 +84,16 @@ namespace WeatherAnalyzer
 
             // Entries in year.
             Console.WriteLine("----- -2 -----");
-            Console.WriteLine(string.Join(Environment.NewLine,
-                             listOfWeatherEvents.GroupBy(x => x.StartTime.Year)
-                                                .Select(x => x.Key + " - " + x.Count())
-                                                .ToList()));
+            Console.WriteLine(listOfWeatherEvents.GroupBy(x => x.StartTime.Year)
+                                                 .Select(x => x.Key + " - " + x.Count())
+                                                 .ToList()
+                                                 .StringMerge(Environment.NewLine));
             Console.WriteLine("===<>====<>===");
             var eventsGroupedByYear = from item in listOfWeatherEvents
                                       group item by item.StartTime.Year;
             var entriesInYear = from item in eventsGroupedByYear
                                 select item.Key + " - " + item.Count();
-            Console.WriteLine(string.Join(Environment.NewLine, entriesInYear));
+            Console.WriteLine(entriesInYear.StringMerge(Environment.NewLine));
 
 
             // Number of weather events in the US in 2018.
@@ -122,13 +122,13 @@ namespace WeatherAnalyzer
             // Top-3 cities by rainfall in 2019 (in descending order).
             Console.WriteLine(Environment.NewLine + "----- 01 -----");
             Console.WriteLine("Top-3 cities by rainfall in 2019: ");
-            var top3CitiesByRainfall = string.Join(Environment.NewLine,
-                                       listOfWeatherEvents.Where(x => x.StartTime.Year == 2019 && x.Type == WeatherEventType.Rain)
+            var top3CitiesByRainfall = listOfWeatherEvents.Where(x => x.StartTime.Year == 2019 && x.Type == WeatherEventType.Rain)
                                                           .GroupBy(x => x.City)
                                                           .OrderByDescending(x => x.Count())
                                                           .Select(x => x.Key)
                                                           .Take(3)
-                                                          .ToList());
+                                                          .ToList()
+                                                          .StringMerge(Environment.NewLine);
             Console.WriteLine(top3CitiesByRainfall);
             Console.WriteLine("===<>====<>===");
             Console.WriteLine("Top-3 cities by rainfall in 2019: ");
@@ -138,22 +138,22 @@ namespace WeatherAnalyzer
             var rainCountInCity = from item in rainsGroupedByCity
                                   orderby item.Count()
                                   select item.Key;
-            Console.WriteLine(string.Join(Environment.NewLine,
-                                          rainCountInCity.Reverse()
-                                                         .Take(3)
-                                                         .ToList()));
+            Console.WriteLine(rainCountInCity.Reverse()
+                                             .Take(3)
+                                             .ToList()
+                                             .StringMerge(Environment.NewLine));
 
 
             // Information about the top-1 snowstorm in each year (start, end times and city).
             Console.WriteLine(Environment.NewLine + "----- 02 -----");
             Console.WriteLine("Biggest snowstorm each year:");
-            var topSnowstormsByYear = string.Join(Environment.NewLine,
-                                      listOfWeatherEvents.Where(x => x.Type == WeatherEventType.Snow)
+            var topSnowstormsByYear = listOfWeatherEvents.Where(x => x.Type == WeatherEventType.Snow)
                                                          .OrderByDescending(x => x.EndTime - x.StartTime)
                                                          .GroupBy(x => x.StartTime.Year)
                                                          .Select(x => x.First())
                                                          .OrderBy(x => x.StartTime.Year)
-                                                         .Select(x => $"{x.StartTime.Year} - {x.City} | From {x.StartTime} to {x.EndTime}"));
+                                                         .Select(x => $"{x.StartTime.Year} - {x.City} | From {x.StartTime} to {x.EndTime}")
+                                                         .StringMerge(Environment.NewLine);
             Console.WriteLine(topSnowstormsByYear);
             Console.WriteLine("===<>====<>===");
             Console.WriteLine("Biggest snowstorm each year:");
@@ -166,7 +166,7 @@ namespace WeatherAnalyzer
             var orderedSnowstormsByYear = from item in topSnowstormByYear
                                           orderby item.StartTime.Year
                                           select $"{item.StartTime.Year} - {item.City} | From {item.StartTime} to {item.EndTime}";
-            Console.WriteLine(string.Join(Environment.NewLine, orderedSnowstormsByYear));
+            Console.WriteLine(orderedSnowstormsByYear.StringMerge(Environment.NewLine));
         }
 
         /// <summary>
